@@ -3,14 +3,14 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './Login';
+import Start from './Start';
 
 const Stack = createStackNavigator();
 
 function SplashScreen({ navigation }) {
     useEffect(() => {
       setTimeout(() => {
-        navigation.replace('Login');
+        navigation.replace('Start');
       }, 2000); // 2 segundos
     }, [navigation]);
 
@@ -34,7 +34,7 @@ export default function App() {
         component={SplashScreen}
         options={{ headerShown: false}}
         />
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+        <Stack.Screen name="Start" component={Start} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

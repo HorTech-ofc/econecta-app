@@ -1,15 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import { useFonts, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import CustomButton from './CustomButton';
+import AppLoading from 'expo-app-loading'
 
 export default function Login() {
+  let [fontsLoaded] = useFonts({
+    Montserrat_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <View style={styles.container}>
       <Image
         source={require('./assets/logotipo_econecta_341x98.png')}
         style={styles.image}
       />
-      <Text style={styles.text}>Conectando{'\n'}comunidades,</Text>
+      <Text style={styles.text}>Conectando{'\n'}comunidades,{'\n'}Cultivando{'\n'}sustentabilidade</Text>
       <View style={styles.buttonsContainer}>
         <CustomButton onPress={() => {}} title="Login" />
         <CustomButton onPress={() => {}} title="Cadastrar" />
@@ -31,6 +41,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       marginTop: 100,
       color: '#fff',
+      fontFamily: 'Montserrat_400Regular',
     },
     image: {
       justifyContent: 'flex-start',
