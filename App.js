@@ -3,14 +3,14 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Start from './Start';
+import Iniciar from './Iniciar';
 
 const Stack = createStackNavigator();
 
 function SplashScreen({ navigation }) {
     useEffect(() => {
       setTimeout(() => {
-        navigation.replace('Start');
+        navigation.replace('Iniciar');
       }, 2000); // 2 segundos
     }, [navigation]);
 
@@ -18,7 +18,7 @@ function SplashScreen({ navigation }) {
       <View style={styles.container}>
         <Image
           source={require('./assets/logotipo_econecta_341x98.png')}
-          style={styles.image}
+          style={styles.imagem}
           />
         <StatusBar style="auto" />
       </View>
@@ -34,7 +34,7 @@ export default function App() {
         component={SplashScreen}
         options={{ headerShown: false}}
         />
-        <Stack.Screen name="Start" component={Start} options={{ headerShown: false }}/>
+        <Stack.Screen name="Iniciar" component={Iniciar} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
+  imagem: {
     width: 280,
     height: 70,
   },

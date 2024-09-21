@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 
-const CustomButton = ({ onPress, title }) => (
-  <Pressable style={styles.button} onPress={onPress}>
-    <Text style={styles.text}>{title}</Text>
+const BotaoCustomizado = ({ onPress, title }) => (
+  <Pressable style={styles.botao} onPress={onPress}>
+    <Text style={styles.texto}>{title}</Text>
   </Pressable>
 );
 
 const styles = StyleSheet.create({
-  button: {
+  botao: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
     height: 60,
     marginTop: 20,
   },
-  text: {
+  texto: {
     fontSize: 22,
     lineHeight: 22,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
     color: '#364b56',
+    fontFamily: './assets/fontes/Montserrat/static/Montserrat-Bold.ttf',
   },
 });
 
-export default CustomButton;
+export default BotaoCustomizado;
