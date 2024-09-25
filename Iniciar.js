@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import { View, Text, StyleSheet, Image} from 'react-native';
 import { useFonts } from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
 import BotaoCustomizado from './BotaoCustomizado';
 
-export default function Start() {
+
+export default function Iniciar() {
+  const navigation = useNavigation(); 
   return (
     <View style={styles.container}>
       <Image
@@ -12,14 +15,14 @@ export default function Start() {
       />
       <Text style={styles.texto}>Conectando{'\n'}comunidades,{'\n'}Cultivando{'\n'}sustentabilidade</Text>
       <View style={styles.containerBotao}>
-        <BotaoCustomizado onPress={() => {}} title="Login" />
-        <BotaoCustomizado onPress={() => {}} title="Cadastrar" />
+        <BotaoCustomizado onPress={() => navigation.navigate('Entrar')} title="Login" />
+        <BotaoCustomizado onPress={() => navigation.navigate('Cadastrar')} title="Cadastrar" />
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({''
     container: {
       flex: 1,
       alignItems: 'center',

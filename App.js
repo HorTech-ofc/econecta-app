@@ -4,6 +4,8 @@ import { StyleSheet, Image, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Iniciar from './Iniciar';
+import Entrar from './Entrar';
+import Cadastrar from './Cadastrar';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +37,18 @@ export default function App() {
         options={{ headerShown: false}}
         />
         <Stack.Screen name="Iniciar" component={Iniciar} options={{ headerShown: false }}/>
+        <Stack.Screen 
+          name="Entrar" 
+          component={Entrar} 
+          options={{ title: 'Entrar'}}  // Define o título da tela "Entrar"
+        />
+
+<Stack.Screen 
+          name="Cadastrar" 
+          component={Cadastrar} 
+          options={{ title: 'Cadastrar'}}  // Define o título da tela "Entrar"
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
