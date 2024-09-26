@@ -15,14 +15,14 @@ export default function Iniciar() {
       />
       <Text style={styles.texto}>Conectando{'\n'}comunidades,{'\n'}Cultivando{'\n'}sustentabilidade</Text>
       <View style={styles.containerBotao}>
-        <BotaoCustomizado onPress={() => navigation.navigate('Entrar')} title="Login" />
-        <BotaoCustomizado onPress={() => navigation.navigate('Cadastrar')} title="Cadastrar" />
+        <BotaoCustomizado corBotao={"#39b54a"} corTexto={"#364b56"} onPress={() => navigation.navigate('Entrar')} title="Login" />
+        <BotaoCustomizado corBotao={"#39b54a"} corTexto={"#364b56"} onPress={() => navigation.navigate('Cadastrar')} title="Cadastrar" />
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({''
+const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
