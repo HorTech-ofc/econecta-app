@@ -40,7 +40,7 @@ export default function App() {
         <Stack.Screen 
           name="Entrar" 
           component={Entrar} 
-          options={{ title: 'Entrar'}}  // Define o título da tela "Entrar"
+          options={{ headerShown: false}}  // Define o título da tela "Entrar"
         />
 
 <Stack.Screen 
@@ -65,4 +65,5 @@ const styles = StyleSheet.create({
     width: 280,
     height: 70,
   },
+  
 });
