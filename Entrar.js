@@ -25,11 +25,12 @@ export default function Entrar() {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.imagem}
-        source={require("./assets/logotipo_econecta_341x98.png")}        
+      <Image
+        style={styles.imagem}
+        source={require("./assets/logotipo_econecta_341x98.png")}
       />
       <Text style={styles.texto}>
-        Entrar{"\n"}
+      {"\n"}{"\n"}{"\n"}Entrar
         {"\n"}
       </Text>
 
@@ -70,7 +71,30 @@ export default function Entrar() {
         />
       </View>
 
-      
+      <Text style={styles.label}>
+        {"\n"}
+        {"\n"}Ou entre com
+      </Text>
+
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 30,
+        alignItems: 'center',
+      }}>
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={require("./assets/imagens/google.png")}
+        />
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={require("./assets/imagens/facebook.png")}
+        />
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={require("./assets/imagens/apple.png")}
+        />
+      </View>
     </View>
   );
 }
@@ -83,6 +107,10 @@ const styles = StyleSheet.create({
     height: 40,
     alignSelf: "center", // Centraliza horizontalmente
     marginTop: 40, // Adiciona um espaçamento do topo da tela
+  },
+  imagemApps: {
+    width: 20,
+    height: 20,
   },
   container: {
     flex: 1,
@@ -122,12 +150,12 @@ const styles = StyleSheet.create({
   },
   esqueceuSenha: {
     fontSize: 14,
-    color: "#007BFF",
+    color: "#fc7217",
     marginBottom: 20,
     fontFamily: "Montserrat",
   },
   containerBotao: {
-    marginTop: 20,
+    marginTop: 0,
     width: "100%",
     alignItems: "center",
   },
