@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   texto: {
-    fontSize: 25,
+    fontSize: 23,
+    textAlign: 'justify',
     lineHeight: 22,
     letterSpacing: 0.25,
     fontFamily: './assets/fontes/Montserrat/static/Montserrat-Bold.ttf',

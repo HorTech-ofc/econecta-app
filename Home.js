@@ -32,51 +32,14 @@ export default function Entrar() {
       <Text style={styles.texto}>
         {"\n"}
         {"\n"}
-        {"\n"}Entrar
+        {"\n"}Inicial
         {"\n"}
       </Text>
 
-      {/* Campo de entrada para e-mail */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>E-mail:</Text>
-        <TextInput
-          style={styles.input}
-          keyboardType="email-address"
-          placeholder="Digite seu e-mail"
-          placeholderTextColor="#ccc"
-        />
-      </View>
-
-      {/* Campo de entrada para senha */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Senha:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite sua senha"
-          placeholderTextColor="#ccc"
-          secureTextEntry={true}
-        />
-      </View>
-
-      {/* Esqueceu a senha */}
-      <TouchableOpacity>
-        <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
-      </TouchableOpacity>
-
-      {/* Botão de Login */}
-      <View style={styles.containerBotao}>
-        <BotaoCustomizado
-          corBotao="#f28123"
-          corTexto="#364b56"
-          onPress={() => navigation.navigate("Entrar")}
-          title="Entrar"
-        />
-      </View>
-
-      <Text style={styles.label}>
-        {"\n"}
-        {"\n"}Ou entre com
-      </Text>
+      <Image
+        style={{ width: 400, height: 300, margin: 15 }}
+        source={require("./assets/imagens/Cópia de Login.png")}
+      />
 
       <View
         style={{
@@ -86,43 +49,39 @@ export default function Entrar() {
           alignItems: "center",
         }}
       >
-        <Image
-          style={{ width: 50, height: 50, margin:20 }}
-          source={require("./assets/imagens/google.png")}
-        />
-        <Image
-          style={{ width: 50, height: 50, margin:20 }}
-          source={require("./assets/imagens/facebook.png")}
-        />
-        <Image
-          style={{ width: 50, height: 50, margin:20 }}
-          source={require("./assets/imagens/apple.png")}
-        />
-      </View>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={{ width: 50, height: 50, margin: 15 }}
+            source={require("./assets/imagens/house.png")}
+          />
+        </TouchableOpacity>
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          margin: 20,
-          alignItems: "center",
-        }}
-      >
-        {/* Corrected <Text> component */}
-        <Text
-          style={{ color: "#ffff", fontFamily: "Montserrat", fontSize: 17 }}
-        >
-          Ainda não possui uma conta?
-        </Text>
-        <TouchableOpacity
-          style={{ color: "#f28123", fontFamily: "Montserrat", fontSize: 10 }}
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Text
-            style={{ color: "#f28123", fontFamily: "Montserrat", fontSize: 15 }}
-          >
-            Cadastre-se
-          </Text>
+        <TouchableOpacity>
+          <Image
+            style={{ width: 50, height: 50, margin: 15 }}
+            source={require("./assets/imagens/graphbar.png")}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("AddCultura")}>
+          <Image
+            style={{ width: 50, height: 50, margin: 15 }}
+            source={require("./assets/imagens/plant.png")}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("ChatSuporte")}>
+          <Image
+            style={{ width: 50, height: 50, margin: 15 }}
+            source={require("./assets/imagens/chat.png")}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("Conta")}>
+          <Image
+            style={{ width: 50, height: 50, margin: 15 }}
+            source={require("./assets/imagens/user.png")}
+          />
         </TouchableOpacity>
       </View>
     </View>
