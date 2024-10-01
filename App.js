@@ -73,7 +73,7 @@ export default function App() {
         />
         <Stack.Screen
           name="AddCultura"
-          component={Home}
+          component={AddCultura}
           options={{ title: "AddCultura" }} // Define o título da tela "Conta"
         />
       </Stack.Navigator>

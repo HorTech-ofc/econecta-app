@@ -1,26 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   Image,
   StyleSheet,
   TouchableOpacity,
+  FlatList,
+  TextInput,
+  Button,
 } from "react-native";
-import BotaoCustomizado from "./BotaoCustomizado";
+import axios from "axios";
 import { useFonts } from "expo-font";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-export default function Entrar() {
+// Substitua por sua chave da API do Pexels
+const PEXELS_API_KEY = "EqoPh4kf9BUr97tpsVBBL0xjgVFXAHJt3aDdt7RBlSUTxXgIkH5CWd7K";
+
+// Função para buscar imagem no Pexels
+const buscarImagemPexels = async (query) => {
+  try {
+    const response = await axios.get("https://api.pexels.com/v1/search", {
+      params: { query, per_page: 1 },
+      headers: {
+        Authorization: PEXELS_API_KEY,
+      },
+    });
+
+    const imagens = response.data.photos;
+    if (imagens.length > 0) {
+      return imagens[0].src.medium; // Retorna a URL da imagem
+    } else {
+      return null; // Nenhuma imagem encontrada
+    }
+  } catch (error) {
+    console.error("Erro ao buscar imagem no Pexels:", error);
+    return null;
+  }
+};
+
+// Mapeamento de nomes de hortaliças para imagens locais
+const imagensHortalicas = {
+  alface: require("./assets/imagens/alface.jpeg"),
+  tomate: require("./assets/imagens/tomate.jpeg"),
+  cenoura: require("./assets/imagens/cenoura.jpeg"),
+};
+
+export default function Home() {
   const navigation = useNavigation();
+  const route = useRoute();
 
-  // Carregar fontes personalizadas usando expo-font
   const [fontsLoaded] = useFonts({
     Montserrat: require("./assets/fontes/Montserrat/static/Montserrat-Regular.ttf"),
   });
 
+  const [nome, setNome] = useState("");
+  const [hortalicaSelecionada, setHortalicaSelecionada] = useState(null);
+  const [mostrarDetalhes, setMostrarDetalhes] = useState(false);
+  const [hortalicas, setHortalicas] = useState([]);
+
+  const adicionarHortalica = async () => {
+    if (nome) {
+      const nomeLower = nome.toLowerCase();
+      let imagem = imagensHortalicas[nomeLower];
+
+      if (!imagem) {
+        // Se não encontrar imagem local, busca uma imagem na API Pexels
+        const imagemUrl = await buscarImagemPexels(nomeLower);
+        if (imagemUrl) {
+          imagem = { uri: imagemUrl };
+        } else {
+          // Usa uma imagem padrão se não encontrar nada
+          imagem = require("./assets/imagens/plant.png");
+        }
+      }
+
+      const newHortalica = {
+        id: String(hortalicas.length + 1),
+        nome,
+        status: "Nova",
+        temperatura: "22°C",
+        umidade: "60%",
+        tempoPlantada: "5 dias",
+        imagem, // A imagem associada à hortaliça
+      };
+
+      setHortalicas([...hortalicas, newHortalica]);
+      setNome("");
+    }
+  };
+
+  const selecionarHortalica = (id) => {
+    if (hortalicaSelecionada === id) {
+      setHortalicaSelecionada(null);
+      setMostrarDetalhes(false);
+    } else {
+      setHortalicaSelecionada(id);
+      setMostrarDetalhes(true);
+    }
+  };
+
   if (!fontsLoaded) {
-    return null; // Retorna null ou um indicador de carregamento enquanto as fontes estão sendo carregadas
+    return null;
   }
 
   return (
@@ -32,54 +112,86 @@ export default function Entrar() {
       <Text style={styles.texto}>
         {"\n"}
         {"\n"}
-        {"\n"}Inicial
+        {"\n"}Inicial (em teste *não mexer)
         {"\n"}
       </Text>
 
-      <Image
-        style={{ width: 400, height: 300, margin: 15 }}
-        source={require("./assets/imagens/Cópia de Login.png")}
+      <View style={styles.addCultura}>
+        <TextInput
+          style={styles.input}
+          placeholder="Nome da hortaliça"
+          value={nome}
+          onChangeText={setNome} // Atualiza o estado do nome
+        />
+        <Button title="Adicionar" onPress={adicionarHortalica} />
+      </View>
+
+      <FlatList
+        data={hortalicas}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => selecionarHortalica(item.id)}>
+            <View style={styles.hortalica}>
+              <Image source={item.imagem} style={styles.hortalicaImagem} />
+              <Text style={styles.hortalicaNome}>{item.nome}</Text>
+              {hortalicaSelecionada === item.id && (
+                <>
+                  <Text style={styles.hortalicaStatus}>
+                    Status: {item.status}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setMostrarDetalhes(!mostrarDetalhes)}
+                  >
+                    <Text style={styles.visionLink}>
+                      {mostrarDetalhes
+                        ? "Ocultar detalhes"
+                        : "Ver visão completa"}
+                    </Text>
+                  </TouchableOpacity>
+                  {mostrarDetalhes && (
+                    <View style={styles.detalhes}>
+                      <Text>Temperatura: {item.temperatura}</Text>
+                      <Text>Umidade: {item.umidade}</Text>
+                      <Text>Tempo Plantada: {item.tempoPlantada}</Text>
+                    </View>
+                  )}
+                </>
+              )}
+            </View>
+          </TouchableOpacity>
+        )}
+        numColumns={2} // Define o número de colunas na grade
+        columnWrapperStyle={styles.columnWrapper} // Estilo para espaçamento entre colunas
       />
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          margin: 20,
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.navigation}>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
-            style={{ width: 50, height: 50, margin: 15 }}
+            style={styles.icon}
             source={require("./assets/imagens/house.png")}
           />
         </TouchableOpacity>
-
         <TouchableOpacity>
           <Image
-            style={{ width: 50, height: 50, margin: 15 }}
+            style={styles.icon}
             source={require("./assets/imagens/graphbar.png")}
           />
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate("AddCultura")}>
           <Image
-            style={{ width: 50, height: 50, margin: 15 }}
+            style={styles.icon}
             source={require("./assets/imagens/plant.png")}
           />
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate("ChatSuporte")}>
           <Image
-            style={{ width: 50, height: 50, margin: 15 }}
+            style={styles.icon}
             source={require("./assets/imagens/chat.png")}
           />
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate("Conta")}>
           <Image
-            style={{ width: 50, height: 50, margin: 15 }}
+            style={styles.icon}
             source={require("./assets/imagens/user.png")}
           />
         </TouchableOpacity>
@@ -88,18 +200,15 @@ export default function Entrar() {
   );
 }
 
+// Estilos para a interface
 const styles = StyleSheet.create({
   imagem: {
-    position: "absolute", // Posiciona a imagem de forma absoluta
-    top: 0, // Coloca a imagem no topo
+    position: "absolute",
+    top: 0,
     width: 150,
     height: 40,
-    alignSelf: "center", // Centraliza horizontalmente
-    marginTop: 40, // Adiciona um espaçamento do topo da tela
-  },
-  imagemApps: {
-    width: 20,
-    height: 20,
+    alignSelf: "center",
+    marginTop: 40,
   },
   container: {
     flex: 1,
@@ -115,37 +224,65 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontFamily: "Montserrat",
   },
-  inputContainer: {
-    width: "100%",
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 20,
-    color: "#ffffff",
-    fontFamily: "Montserrat",
-    marginBottom: 5,
+  addCultura: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
   },
   input: {
-    width: "100%",
-    borderWidth: 2,
-    borderColor: "#ffffff",
-    borderRadius: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    backgroundColor: "#364b56",
-    fontSize: 16,
-    color: "#ffffff",
-    fontFamily: "Montserrat",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    marginRight: 10,
+    flex: 1,
+    borderRadius: 5,
+    backgroundColor: "#fff",
   },
-  esqueceuSenha: {
-    fontSize: 14,
-    color: "#fc7217",
-    marginBottom: 20,
-    fontFamily: "Montserrat",
-  },
-  containerBotao: {
-    marginTop: 0,
-    width: "100%",
+  hortalica: {
+    padding: 15,
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+    flex: 1,
+    margin: 5,
+    backgroundColor: "#2b2b2b",
+    borderRadius: 8,
     alignItems: "center",
+  },
+  hortalicaImagem: {
+    width: 60,
+    height: 60,
+    marginBottom: 10,
+  },
+  hortalicaNome: {
+    fontSize: 18,
+    color: "#ffffff",
+  },
+  hortalicaStatus: {
+    fontSize: 14,
+    color: "green",
+  },
+  visionLink: {
+    color: "blue",
+    marginTop: 5,
+  },
+  detalhes: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 5,
+  },
+  columnWrapper: {
+    justifyContent: "space-between",
+  },
+  navigation: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 20,
+    alignItems: "center",
+  },
+  icon: {
+    width: 50,
+    height: 50,
+    margin: 15,
   },
 });

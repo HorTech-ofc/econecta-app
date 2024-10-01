@@ -1,18 +1,34 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const App = () => {
-  const [hortalicas, setHortalicas] = useState([]);
+export default function Home() {
+  const [hortalicas, setHortalicas] = useState([
+    { id: '1', nome: 'Alface', status: 'Plantada' },
+    { id: '2', nome: 'Cenoura', status: 'Crescendo' },
+  ]);
+
   const [nome, setNome] = useState('');
+  const navigation = useNavigation();
 
+  // Função para adicionar uma nova hortaliça
   const adicionarHortalica = () => {
-    setHortalicas([...hortalicas, { nome, status: 'Plantada' }]);
-    setNome('');
+    if (nome.trim()) {
+      const novaHortalica = {
+        id: Date.now().toString(),
+        nome,
+        status: 'Plantada',
+      };
+      setHortalicas([...hortalicas, novaHortalica]);
+      setNome(''); // Limpa o campo de texto após adicionar
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Econecta</Text>
+      <Text style={styles.title}>Econecta - Minhas Hortaliças</Text>
+
+      {/* Formulário para adicionar nova hortaliça */}
       <View style={styles.addCultura}>
         <TextInput
           style={styles.input}
@@ -22,9 +38,11 @@ const App = () => {
         />
         <Button title="Adicionar" onPress={adicionarHortalica} />
       </View>
+
+      {/* Lista de hortaliças cadastradas */}
       <FlatList
         data={hortalicas}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.hortalica}>
             <Text style={styles.hortalicaNome}>{item.nome}</Text>
@@ -32,9 +50,15 @@ const App = () => {
           </View>
         )}
       />
+
+      {/* Botão para navegar para a tela "Entrar" */}
+      <Button
+        title="Ir para Entrar"
+        onPress={() => navigation.navigate('Home', { hortalicas })}
+      />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -73,5 +97,3 @@ const styles = StyleSheet.create({
     color: 'green',
   },
 });
-
-export default App;

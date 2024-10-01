@@ -68,7 +68,7 @@ export default function Entrar() {
         <BotaoCustomizado
           corBotao="#f28123"
           corTexto="#364b56"
-          onPress={() => navigation.navigate("Entrar")}
+          onPress={() => navigation.navigate("Home")}
           title="Entrar"
         />
       </View>
@@ -116,7 +116,7 @@ export default function Entrar() {
         </Text>
         <TouchableOpacity
           style={{ color: "#f28123", fontFamily: "Montserrat", fontSize: 10 }}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("Cadastrar")}
         >
           <Text
             style={{ color: "#f28123", fontFamily: "Montserrat", fontSize: 15 }}
