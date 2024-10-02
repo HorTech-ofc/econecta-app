@@ -1,187 +1,180 @@
-import React from 'react'; 
+import React from "react";
+
+import { View, Text, StyleSheet, Image, TextInput } from "react-native";
+
+import BotaoCustomizado from "./BotaoCustomizado";
+
+import { useNavigation } from "@react-navigation/native";
+
+export default function Cadastrar() {
+  const navigation = useNavigation();
+
+  return (
+    <View style={styles.container}>
+      <Image
+        source={require("./assets/logotipo_econecta_341x98.png")}
+        style={styles.imagem}
+      />
+
+      <View style={styles.form}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Nome</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu nome"
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            required
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>E-mail</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="exemplo@dominio.com"
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            keyboardType="email-address"
+            required
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Senha</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Digite sua senha"
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            secureTextEntry
+            required
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Confirmar Senha</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Confirme sua senha"
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            secureTextEntry
+            required
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Data de Nascimento</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="DD/MM/AAAA"
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+          />
+        </View>
 
-import { View, Text, StyleSheet, Image, TextInput } from 'react-native'; 
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Telefone</Text>
 
-import BotaoCustomizado from './BotaoCustomizado'; 
+          <TextInput
+            style={styles.input}
+            placeholder="(XX) XXXXX-XXXX"
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            keyboardType="phone-pad"
+          />
+        </View>
+      </View>
 
-import { useNavigation } from '@react-navigation/native'; 
+      <BotaoCustomizado
+        corBotao="#f28123"
+        corTexto="#364b56"
+        style={styles.BotaoCustomizado}
+        onPress={() => navigation.navigate("Home")}
+        title="Confirmar"
+      />
+      <View style={{flexDirection: "row",
+          justifyContent: "space-between",
+          margin: 20,
+          alignItems: "center",}}>
+        <Text style={styles.label}>Já possui uma conta?</Text>
+        <Text
+          onPress={() => navigation.navigate("Entrar")}
+          style={{ color: "#f28123", fontFamily: "Montserrat", fontSize: 15,}}
+        >
+          Entre
+        </Text>
+      </View>
+    </View>
+  );
+}
 
-  
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
 
-export default function Cadastrar() { 
+    alignItems: "center",
 
-  const navigation = useNavigation(); 
+    justifyContent: "flex-start",
 
-  
+    backgroundColor: "#364b56",
 
-  return ( 
+    paddingTop: 50,
+  },
 
-    <View style={styles.container}> 
+  texto: {
+    fontSize: 24,
 
-      <Text style={styles.texto}>Bem-vindo à tela de Cadastro</Text> 
+    marginTop: 20,
 
-      <Image 
+    color: "#fff",
 
-        source={require('./assets/logotipo_econecta_341x98.png')} 
+    textAlign: "center",
+  },
 
-        style={styles.imagem} 
+  imagem: {
+    width: 150,
 
-      /> 
+    height: 40,
 
-      <Text style={styles.texto}>Cadastrar</Text> 
+    marginVertical: 20,
+  },
 
-      <View style={styles.form}> 
+  form: {
+    width: "80%",
 
-        <View style={styles.inputContainer}> 
+    alignItems: "center",
 
-          <Text style={styles.label}>Nome</Text> 
+    marginTop: 20,
+  },
 
-          <TextInput style={styles.input} placeholder="Digite seu nome" placeholderTextColor="rgba(255, 255, 255, 0.5)" required /> 
+  inputContainer: {
+    width: "100%",
 
-        </View> 
+    marginVertical: 10,
+  },
 
-        <View style={styles.inputContainer}> 
+  label: {
+    color: "#fff",
 
-          <Text style={styles.label}>E-mail</Text> 
+    marginBottom: 5,
 
-          <TextInput style={styles.input} placeholder="exemplo@dominio.com" placeholderTextColor="rgba(255, 255, 255, 0.5)" keyboardType="email-address" required /> 
+    fontSize: 16,
+  },
 
-        </View> 
+  input: {
+    width: "100%",
 
-        <View style={styles.inputContainer}> 
+    padding: 10,
 
-          <Text style={styles.label}>Senha</Text> 
+    borderWidth: 1,
 
-          <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="rgba(255, 255, 255, 0.5)" secureTextEntry required /> 
+    borderColor: "#fff",
 
-        </View> 
+    borderRadius: 30,
 
-        <View style={styles.inputContainer}> 
+    backgroundColor: "#364b56",
 
-          <Text style={styles.label}>Confirmar Senha</Text> 
-
-          <TextInput style={styles.input} placeholder="Confirme sua senha" placeholderTextColor="rgba(255, 255, 255, 0.5)" secureTextEntry required /> 
-
-        </View> 
-
-        <View style={styles.inputContainer}> 
-
-          <Text style={styles.label}>Data de Nascimento</Text> 
-
-          <TextInput style={styles.input} placeholder="DD/MM/AAAA" placeholderTextColor="rgba(255, 255, 255, 0.5)" /> 
-
-        </View> 
-
-        <View style={styles.inputContainer}> 
-
-          <Text style={styles.label}>Telefone</Text> 
-
-          <TextInput style={styles.input} placeholder="(XX) XXXXX-XXXX" placeholderTextColor="rgba(255, 255, 255, 0.5)" keyboardType="phone-pad" /> 
-
-        </View> 
-
-      </View> 
-
-      <BotaoCustomizado 
-
-        onPress={() => navigation.navigate('Confirmar')} 
-
-        title="Confirmar" 
-
-      /> 
-
-    </View> 
-
-  ); 
-
-} 
-
-  
-
-const styles = StyleSheet.create({ 
-
-  container: { 
-
-    flex: 1, 
-
-    alignItems: 'center', 
-
-    justifyContent: 'flex-start', 
-
-    backgroundColor: '#364b56', 
-
-    paddingTop: 50, 
-
-  }, 
-
-  texto: { 
-
-    fontSize: 24, 
-
-    marginTop: 20, 
-
-    color: '#fff', 
-
-    textAlign: 'center', 
-
-  }, 
-
-  imagem: { 
-
-    width: 150, 
-
-    height: 40, 
-
-    marginVertical: 20, 
-
-  }, 
-
-  form: { 
-
-    width: '80%', 
-
-    alignItems: 'center', 
-
-    marginTop: 20, 
-
-  }, 
-
-  inputContainer: { 
-
-    width: '100%', 
-
-    marginVertical: 10, 
-
-  }, 
-
-  label: { 
-
-    color: '#fff', 
-
-    marginBottom: 5, 
-
-    fontSize: 16, 
-
-  }, 
-
-  input: { 
-
-    width: '100%', 
-
-    padding: 10, 
-
-    borderWidth: 1, 
-
-    borderColor: '#fff', 
-
-    borderRadius: 30, 
-
-    backgroundColor: '#364b56', 
-
-    color: '#fff', 
-
-  }, 
-
-}); 
-
- 
+    color: "#fff",
+  },
+});

@@ -54,7 +54,7 @@ export default function App() {
         <Stack.Screen
           name="Cadastrar"
           component={Cadastrar}
-          options={{ title: "Cadastrar" }} // Define o título da tela "Cadastrar"
+          options={{ headerShown: false }} // Define o título da tela "Cadastrar"
         />
         <Stack.Screen
           name="Home"

@@ -16,11 +16,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 // Substitua por sua chave da API do Pexels
 const PEXELS_API_KEY = "EqoPh4kf9BUr97tpsVBBL0xjgVFXAHJt3aDdt7RBlSUTxXgIkH5CWd7K";
 
-// Função para buscar imagem no Pexels
+// Função para buscar imagem no Pexels com o termo "agricultura" como contexto
 const buscarImagemPexels = async (query) => {
   try {
+    // Adiciona o termo "agriculture" à consulta para restringir a busca a imagens relacionadas à agricultura
+    const queryAgricultura = `${query} fruit`; 
+
     const response = await axios.get("https://api.pexels.com/v1/search", {
-      params: { query, per_page: 1 },
+      params: { query: queryAgricultura, per_page: 1 }, // Query modificada
       headers: {
         Authorization: PEXELS_API_KEY,
       },
