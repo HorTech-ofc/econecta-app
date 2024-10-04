@@ -1,61 +1,112 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import { View, TextInput, Button, StyleSheet } from "react-native";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Home() {
-  const [hortalicas, setHortalicas] = useState([
-    { id: '1', nome: 'Alface', status: 'Plantada' },
-    { id: '2', nome: 'Cenoura', status: 'Crescendo' },
-  ]);
+// Substitua pela sua chave da API do Pexels
+const PEXELS_API_KEY = "EqoPh4kf9BUr97tpsVBBL0xjgVFXAHJt3aDdt7RBlSUTxXgIkH5CWd7K";
 
-  const [nome, setNome] = useState('');
+// Função para traduzir o nome da hortaliça ou fruta para inglês
+const traducaoParaIngles = async (texto) => {
+  try {
+    const response = await axios.post('https://libretranslate.com/translate', {
+      q: texto,
+      source: 'pt', // Português
+      target: 'en', // Inglês
+      format: 'text'
+    }, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    return response.data.translatedText; // Retorna o texto traduzido
+  } catch (error) {
+    console.error("Erro ao traduzir o termo:", error);
+    return texto; // Retorna o texto original em caso de erro
+  }
+};
+
+// Função para buscar imagem no Pexels com o termo "agriculture" como contexto
+const buscarImagemPexels = async (query) => {
+  try {
+    const queryAgricultura = `agriculture fruit vegetable hortalica ${query}`;
+
+    const response = await axios.get("https://api.pexels.com/v1/search", {
+      params: { query: queryAgricultura, per_page: 3 },
+      headers: {
+        Authorization: PEXELS_API_KEY,
+      },
+    });
+
+    const imagens = response.data.photos;
+
+    if (imagens.length > 0) {
+      const imagemRelevante = imagens.find((imagem) =>
+        imagem.alt.toLowerCase().includes(query.toLowerCase())
+      );
+
+      if (imagemRelevante) {
+        return imagemRelevante.src.medium;
+      } else {
+        return imagens[0]?.src.medium || require("./assets/imagens/plant.png");
+      }
+    } else {
+      return require("./assets/imagens/plant.png");
+    }
+  } catch (error) {
+    console.error("Erro ao buscar imagem no Pexels:", error);
+    return require("./assets/imagens/plant.png");
+  }
+};
+
+export default function AddCultura({ route }) {
+  const [nome, setNome] = useState("");
   const navigation = useNavigation();
+  const { hortalicas, setHortalicas } = route.params;
 
-  // Função para adicionar uma nova hortaliça
-  const adicionarHortalica = () => {
-    if (nome.trim()) {
-      const novaHortalica = {
-        id: Date.now().toString(),
+  const adicionarHortalica = async () => {
+    if (nome) {
+      const nomeLower = nome.toLowerCase();
+      let imagem = require("./assets/imagens/plant.png"); // Imagem padrão
+
+      // Verifica se o nome é "cenoura" ou "rúcula" e atribui a imagem correta
+      if (nomeLower === "cenoura") {
+        imagem = require("./assets/imagens/cenoura.jpeg");
+      } else if (nomeLower === "rúcula" || nomeLower === "rucula") {
+        imagem = require("./assets/imagens/rucula.jpeg");
+      } else {
+        // Traduz o nome da hortaliça para inglês antes de buscar a imagem
+        const nomeEmIngles = await traducaoParaIngles(nomeLower);
+        const imagemUrl = await buscarImagemPexels(nomeEmIngles);
+        if (imagemUrl) {
+          imagem = { uri: imagemUrl };
+        }
+      }
+
+      const newHortalica = {
+        id: String(hortalicas.length + 1),
         nome,
-        status: 'Plantada',
+        status: "Nova",
+        temperatura: "22°C",
+        umidade: "60%",
+        tempoPlantada: "5 dias",
+        imagem,
       };
-      setHortalicas([...hortalicas, novaHortalica]);
-      setNome(''); // Limpa o campo de texto após adicionar
+
+      setHortalicas([...hortalicas, newHortalica]);
+      setNome("");
+      navigation.goBack(); // Volta para a tela anterior após adicionar
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Econecta - Minhas Hortaliças</Text>
-
-      {/* Formulário para adicionar nova hortaliça */}
-      <View style={styles.addCultura}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome da hortaliça"
-          value={nome}
-          onChangeText={setNome}
-        />
-        <Button title="Adicionar" onPress={adicionarHortalica} />
-      </View>
-
-      {/* Lista de hortaliças cadastradas */}
-      <FlatList
-        data={hortalicas}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.hortalica}>
-            <Text style={styles.hortalicaNome}>{item.nome}</Text>
-            <Text style={styles.hortalicaStatus}>{item.status}</Text>
-          </View>
-        )}
+      <TextInput
+        style={styles.input}
+        placeholder="Nome da hortaliça"
+        value={nome}
+        onChangeText={setNome}
       />
-
-      {/* Botão para navegar para a tela "Entrar" */}
-      <Button
-        title="Ir para Entrar"
-        onPress={() => navigation.navigate('Home', { hortalicas })}
-      />
+      <Button title="Adicionar Hortaliça" onPress={adicionarHortalica} />
     </View>
   );
 }
@@ -63,37 +114,16 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 20,
-  },
-  addCultura: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    justifyContent: "center",
+    padding: 16,
+    backgroundColor: "#364b56",
   },
   input: {
-    flex: 1,
-    borderColor: '#ccc',
     borderWidth: 1,
-    marginRight: 10,
+    borderColor: "#ccc",
     padding: 10,
-  },
-  hortalica: {
-    padding: 15,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-  },
-  hortalicaNome: {
-    fontSize: 18,
-  },
-  hortalicaStatus: {
-    fontSize: 14,
-    color: 'green',
+    marginBottom: 20,
+    borderRadius: 5,
+    backgroundColor: "#fff",
   },
 });

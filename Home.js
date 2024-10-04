@@ -6,91 +6,32 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  TextInput,
-  Button,
 } from "react-native";
-import axios from "axios";
 import { useFonts } from "expo-font";
-import { useNavigation, useRoute } from "@react-navigation/native";
-
-// Substitua por sua chave da API do Pexels
-const PEXELS_API_KEY = "EqoPh4kf9BUr97tpsVBBL0xjgVFXAHJt3aDdt7RBlSUTxXgIkH5CWd7K";
-
-// Função para buscar imagem no Pexels com o termo "agricultura" como contexto
-const buscarImagemPexels = async (query) => {
-  try {
-    // Adiciona o termo "agriculture" à consulta para restringir a busca a imagens relacionadas à agricultura
-    const queryAgricultura = `${query} fruit`; 
-
-    const response = await axios.get("https://api.pexels.com/v1/search", {
-      params: { query: queryAgricultura, per_page: 1 }, // Query modificada
-      headers: {
-        Authorization: PEXELS_API_KEY,
-      },
-    });
-
-    const imagens = response.data.photos;
-    if (imagens.length > 0) {
-      return imagens[0].src.medium; // Retorna a URL da imagem
-    } else {
-      return null; // Nenhuma imagem encontrada
-    }
-  } catch (error) {
-    console.error("Erro ao buscar imagem no Pexels:", error);
-    return null;
-  }
-};
+import { useNavigation } from "@react-navigation/native";
 
 // Mapeamento de nomes de hortaliças para imagens locais
 const imagensHortalicas = {
   alface: require("./assets/imagens/alface.jpeg"),
   tomate: require("./assets/imagens/tomate.jpeg"),
   cenoura: require("./assets/imagens/cenoura.jpeg"),
+  rucula: require("./assets/imagens/rucula.jpeg"),
 };
 
 export default function Home() {
   const navigation = useNavigation();
-  const route = useRoute();
-
   const [fontsLoaded] = useFonts({
     Montserrat: require("./assets/fontes/Montserrat/static/Montserrat-Regular.ttf"),
   });
-
-  const [nome, setNome] = useState("");
   const [hortalicaSelecionada, setHortalicaSelecionada] = useState(null);
   const [mostrarDetalhes, setMostrarDetalhes] = useState(false);
-  const [hortalicas, setHortalicas] = useState([]);
 
-  const adicionarHortalica = async () => {
-    if (nome) {
-      const nomeLower = nome.toLowerCase();
-      let imagem = imagensHortalicas[nomeLower];
-
-      if (!imagem) {
-        // Se não encontrar imagem local, busca uma imagem na API Pexels
-        const imagemUrl = await buscarImagemPexels(nomeLower);
-        if (imagemUrl) {
-          imagem = { uri: imagemUrl };
-        } else {
-          // Usa uma imagem padrão se não encontrar nada
-          imagem = require("./assets/imagens/plant.png");
-        }
-      }
-
-      const newHortalica = {
-        id: String(hortalicas.length + 1),
-        nome,
-        status: "Nova",
-        temperatura: "22°C",
-        umidade: "60%",
-        tempoPlantada: "5 dias",
-        imagem, // A imagem associada à hortaliça
-      };
-
-      setHortalicas([...hortalicas, newHortalica]);
-      setNome("");
-    }
-  };
+  // Exemplo de array com algumas hortaliças (pode ser substituído por dados dinâmicos)
+  const [hortalicas, setHortalicas] = useState([
+    { id: "1", nome: "Cenoura", imagem: imagensHortalicas.cenoura, status: "Saudável", temperatura: "25°C", umidade: "60%", tempoPlantada: "20 dias" },
+    { id: "2", nome: "Tomate-cereja", imagem: imagensHortalicas.tomate, status: "Saudável", temperatura: "22°C", umidade: "65%", tempoPlantada: "30 dias" },
+    { id: "3", nome: "Rúcula", imagem: imagensHortalicas.rucula, status: "Saudável", temperatura: "20°C", umidade: "70%", tempoPlantada: "15 dias" },
+  ]);
 
   const selecionarHortalica = (id) => {
     if (hortalicaSelecionada === id) {
@@ -103,7 +44,7 @@ export default function Home() {
   };
 
   if (!fontsLoaded) {
-    return null;
+    return <Text>Carregando...</Text>;
   }
 
   return (
@@ -113,42 +54,28 @@ export default function Home() {
         source={require("./assets/logotipo_econecta_341x98.png")}
       />
       <Text style={styles.texto}>
-        {"\n"}
-        {"\n"}
-        {"\n"}Inicial (em teste *não mexer)
-        {"\n"}
+        {"\n"}{"\n"}Inicial (em teste *não mexer){"\n"}
       </Text>
 
-      <View style={styles.addCultura}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome da hortaliça"
-          value={nome}
-          onChangeText={setNome} // Atualiza o estado do nome
-        />
-        <Button title="Adicionar" onPress={adicionarHortalica} />
-      </View>
-
+      {/* Estilo de horta em quadrantes */}
       <FlatList
         data={hortalicas}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => selecionarHortalica(item.id)}>
-            <View style={styles.hortalica}>
+            <View style={styles.quadrante}>
               <Image source={item.imagem} style={styles.hortalicaImagem} />
-              <Text style={styles.hortalicaNome}>{item.nome}</Text>
+              <View style={styles.labelContainer}>
+                <Text style={styles.hortalicaNome}>{item.nome}</Text>
+              </View>
               {hortalicaSelecionada === item.id && (
                 <>
-                  <Text style={styles.hortalicaStatus}>
-                    Status: {item.status}
-                  </Text>
+                  <Text style={styles.hortalicaStatus}>Status: {item.status}</Text>
                   <TouchableOpacity
                     onPress={() => setMostrarDetalhes(!mostrarDetalhes)}
                   >
                     <Text style={styles.visionLink}>
-                      {mostrarDetalhes
-                        ? "Ocultar detalhes"
-                        : "Ver visão completa"}
+                      {mostrarDetalhes ? "Ocultar detalhes" : "Ver visão completa"}
                     </Text>
                   </TouchableOpacity>
                   {mostrarDetalhes && (
@@ -163,10 +90,11 @@ export default function Home() {
             </View>
           </TouchableOpacity>
         )}
-        numColumns={2} // Define o número de colunas na grade
-        columnWrapperStyle={styles.columnWrapper} // Estilo para espaçamento entre colunas
+        numColumns={3}
+        columnWrapperStyle={styles.row}
       />
 
+      {/* Navegação inferior */}
       <View style={styles.navigation}>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
@@ -174,13 +102,9 @@ export default function Home() {
             source={require("./assets/imagens/house.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Image
-            style={styles.icon}
-            source={require("./assets/imagens/graphbar.png")}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("AddCultura")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AddCultura", { hortalicas, setHortalicas })}
+        >
           <Image
             style={styles.icon}
             source={require("./assets/imagens/plant.png")}
@@ -190,6 +114,12 @@ export default function Home() {
           <Image
             style={styles.icon}
             source={require("./assets/imagens/chat.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image
+            style={styles.icon}
+            source={require("./assets/imagens/graphbar.png")}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Conta")}>
@@ -203,7 +133,6 @@ export default function Home() {
   );
 }
 
-// Estilos para a interface
 const styles = StyleSheet.create({
   imagem: {
     position: "absolute",
@@ -227,38 +156,37 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontFamily: "Montserrat",
   },
-  addCultura: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
+  row: {
+    justifyContent: "space-between",
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginRight: 10,
-    flex: 1,
-    borderRadius: 5,
-    backgroundColor: "#fff",
-  },
-  hortalica: {
-    padding: 15,
-    borderBottomColor: "#ccc",
-    borderBottomWidth: 1,
-    flex: 1,
+  quadrante: {
+    backgroundColor: "#A0522D",
     margin: 5,
-    backgroundColor: "#2b2b2b",
-    borderRadius: 8,
+    width: 100,
+    height: 100,
+    justifyContent: "center",
     alignItems: "center",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#2E2E2E",
   },
   hortalicaImagem: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     marginBottom: 10,
   },
+  labelContainer: {
+    position: "absolute",
+    bottom: 5,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    paddingHorizontal: 5,
+    borderRadius: 5,
+  },
   hortalicaNome: {
-    fontSize: 18,
-    color: "#ffffff",
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   hortalicaStatus: {
     fontSize: 14,
@@ -273,9 +201,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#f0f0f0",
     borderRadius: 5,
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
   },
   navigation: {
     flexDirection: "row",
