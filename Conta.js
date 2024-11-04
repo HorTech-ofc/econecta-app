@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, ScrollView, Alert } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import BotaoCustomizado from './BotaoCustomizado';
+import { v4 as uuidv4 } from 'uuid';
+const uuid = require('uuid').v4;
+
+
 
 export default function Conta() {
   const [nome, setNome] = useState('');
@@ -13,26 +17,32 @@ export default function Conta() {
   const [notificacoesVisible, setNotificacoesVisible] = useState(false);
   const [opcaoSelecionada, setOpcaoSelecionada] = useState('');
 
-  const pickImage = () => {
+  const pickImage = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status !== 'granted') {
+      Alert.alert('Permissão para acessar a galeria é necessária!');
+      return;
+    }
+  
     let options = {
       mediaType: 'photo',
       maxWidth: 300,
       maxHeight: 300,
       quality: 1,
     };
-    
-    launchImageLibrary(options, (response) => {
-      console.log(response);
-      if (response.didCancel) {
-        Alert.alert('Seleção de imagem cancelada');
-      } else if (response.errorCode) {
-        Alert.alert('Erro ao selecionar imagem:', response.errorMessage);
-      } else if (response.assets && response.assets.length > 0) {
-        const source = { uri: response.assets[0].uri };
-        setProfileImage(source);
-      }
-    });
+  
+    const response = await launchImageLibrary(options);
+    console.log(response);
+    if (response.didCancel) {
+      Alert.alert('Seleção de imagem cancelada');
+    } else if (response.errorCode) {
+      Alert.alert('Erro ao selecionar imagem:', response.errorMessage);
+    } else if (response.assets && response.assets.length > 0) {
+      const source = { uri: response.assets[0].uri };
+      setProfileImage(source);
+    }
   };
+  
 
   const handleSalvar = () => {
     try {

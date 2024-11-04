@@ -33,6 +33,17 @@ function SplashScreen({ navigation }) {
 }
 
 export default function App() {
+  
+  // const [fontsLoaded] = Font.useFonts({
+  //   'Montserrat-Regular': require('./assets/fontes/Montserrat/static/Montserrat-Regular.ttf'),
+  //   'Montserrat-Bold': require('./assets/fontes/Montserrat/static/Montserrat-Bold.ttf'),
+  // });
+
+    // Mostra uma tela de carregamento enquanto as fontes são carregadas
+    // if (!fontsLoaded) {
+    //   return <AppLoading />;
+    // }
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash">

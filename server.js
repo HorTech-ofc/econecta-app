@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const mysql = require('mysql');
+const path = require('path'); // Importar o módulo path
 
 const app = express();
 const PORT = 5500;
@@ -11,6 +12,7 @@ const PORT = 5500;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static('public')); // Serve arquivos estáticos do diretório 'public'
 
 // Conexão com MySQL
 const sequelize = new Sequelize('db_econecta', 'root', 'Senai1234', {
@@ -26,7 +28,6 @@ const sequelize = new Sequelize('db_econecta', 'root', 'Senai1234', {
         console.error('Erro ao conectar com banco de dados:', error);
     }
 })();
-
 
 // Modelo de Usuário
 const User = sequelize.define('User', {
@@ -54,7 +55,7 @@ const User = sequelize.define('User', {
 });
 
 // Sincronizar o modelo
-sequelize.sync();
+sequelize.sync();   
 
 // Rota de Cadastro
 app.post('/register', async (req, res) => {
@@ -90,11 +91,15 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// ** Novo Endpoint para a Tela de Teste **
+app.get('/teste', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'teste.html')); // Serve o arquivo teste.html
+});
+
+// Inicializa o banco de dados
 sequelize.sync({ alter: true }); // Altera a tabela se necessário, mas não exclui dados
-
-
 
 // Iniciando o servidor
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${5500}`);
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
