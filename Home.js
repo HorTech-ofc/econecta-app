@@ -128,6 +128,12 @@ export default function Home() {
             source={require("./assets/imagens/user.png")}
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("TesteGrafana")}>
+          <Image
+            style={styles.icon}
+            source={require("./assets/imagens/cenoura.jpeg")}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
