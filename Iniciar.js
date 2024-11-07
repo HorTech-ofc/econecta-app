@@ -21,12 +21,16 @@ export default function Iniciar() {
           corTexto={"#364b56"}
           onPress={() => navigation.navigate("Entrar")}
           title="Login"
+          
+  tamanhoBotao={{ width: 300, height: 60 }}
         />
         <BotaoCustomizado
           corBotao={"#39b54a"}
           corTexto={"#364b56"}
           onPress={() => navigation.navigate("Cadastrar")}
           title="Cadastrar"
+          
+  tamanhoBotao={{ width: 300, height: 60 }}
         />
       </View>
     </View>

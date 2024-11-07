@@ -54,7 +54,7 @@ export default function Home() {
         source={require("./assets/logotipo_econecta_341x98.png")}
       />
       <Text style={styles.texto}>
-        {"\n"}{"\n"}Inicial (em teste *não mexer){"\n"}
+        {"\n"}{"\n"}{"\n"}{"\n"}
       </Text>
 
       {/* Estilo de horta em quadrantes */}
@@ -110,12 +110,12 @@ export default function Home() {
             source={require("./assets/imagens/plant.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("ChatSuporte")}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate("ChatSuporte")}>
           <Image
             style={styles.icon}
             source={require("./assets/imagens/chat.png")}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity>
           <Image
             style={styles.icon}
@@ -128,12 +128,12 @@ export default function Home() {
             source={require("./assets/imagens/user.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("TesteGrafana")}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate("TesteGrafana")}>
           <Image
             style={styles.icon}
             source={require("./assets/imagens/cenoura.jpeg")}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

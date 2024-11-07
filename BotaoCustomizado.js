@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const BotaoCustomizado = ({ onPress, title, corBotao, corTexto }) => {
+const BotaoCustomizado = ({ onPress, title, corBotao, corTexto, tamanhoBotao  }) => {
   return (
     <TouchableOpacity
-      style={[styles.botao, { backgroundColor: corBotao }]}
+      style={[styles.botao, { backgroundColor: corBotao, width: tamanhoBotao.width, height: tamanhoBotao.height }]}
       onPress={onPress}
     >
       <Text style={[styles.texto, { color: corTexto }]}>{title}</Text>

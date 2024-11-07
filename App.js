@@ -10,7 +10,7 @@ import Home from "./Home";
 import ChatSuporte from "./ChatSuporte";
 import Conta from "./Conta";
 import AddCultura from "./AddCultura";
-import TesteGrafana from "./TesteGrafana";
+// import TesteGrafana from "./TesteGrafana";
 
 const Stack = createStackNavigator();
 
@@ -62,14 +62,14 @@ export default function App() {
           component={Home}
           options={{ title: "Home" }} // Define o título da tela "Home"
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="ChatSuporte"
-          component={Home}
+          component={ChatSuporte}
           options={{ title: "ChatSuporte" }} // Define o título da tela "Suporte"
-        />
+        /> */}
         <Stack.Screen
           name="Conta"
-          component={Home}
+          component={Conta}
           options={{ title: "Conta" }} // Define o título da tela "Conta"
         />
         <Stack.Screen
@@ -77,11 +77,11 @@ export default function App() {
           component={AddCultura}
           options={{ title: "AddCultura" }} // Define o título da tela "Conta"
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="TesteGrafana"
           component={TesteGrafana}
           options={{ title: "TesteGrafana" }} // Define o título da tela "TesteGrafana"
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

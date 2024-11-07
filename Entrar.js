@@ -70,6 +70,8 @@ export default function Entrar() {
           corTexto="#364b56"
           onPress={() => navigation.navigate("Home")}
           title="Entrar"
+          
+  tamanhoBotao={{ width: 300, height: 60 }}
         />
       </View>
 
