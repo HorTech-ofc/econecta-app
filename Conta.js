@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, ScrollView, Alert, Dimensions } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import BotaoCustomizado from './BotaoCustomizado';
 import { v4 as uuidv4 } from 'uuid';
 const uuid = require('uuid').v4;
+
+const { width: screenWidth } = Dimensions.get('window'); // Pegando a largura da tela
 
 export default function Conta() {
   const [nome, setNome] = useState('');
@@ -57,12 +59,10 @@ export default function Conta() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Contêiner posicionado no canto superior direito */}
       <View style={styles.userContainer}>
-      <Text style={styles.texto}>Usuário</Text>
-        <Image
-          style={styles.profileImage}
-          source={profileImage}
-        />
+        <Text style={styles.textoUsuario}>Usuário</Text>
+        <Image style={styles.profileImage} source={profileImage} />
       </View>
 
       <View style={styles.infoContainer}>
@@ -73,7 +73,6 @@ export default function Conta() {
           onChangeText={setNome}
           placeholder="Digite seu nome"
           placeholderTextColor="rgba(255, 255, 255, 0.5)"
-
         />
 
         <Text style={styles.label}>Telefone</Text>
@@ -112,7 +111,7 @@ export default function Conta() {
           value={confirmarSenha}
           onChangeText={setConfirmarSenha}
           secureTextEntry
-          placeholder="Confirme sua senha"
+          placeholder="Seu endereço"
           placeholderTextColor="rgba(255, 255, 255, 0.5)"
         />
 
@@ -121,7 +120,9 @@ export default function Conta() {
           onPress={() => setNotificacoesVisible(!notificacoesVisible)}
         >
           <Text style={styles.label}>Notificações </Text>
-          <Text style={styles.toggleText}>{notificacoesVisible ? 'Ocultar' : 'Mostrar'}</Text>
+          <Text style={styles.toggleText}>
+            {notificacoesVisible ? 'Ocultar' : 'Mostrar'}
+          </Text>
         </TouchableOpacity>
 
         {notificacoesVisible && (
@@ -138,18 +139,14 @@ export default function Conta() {
             )}
           />
         )}
-        
-        <BotaoCustomizado
-        onPress={handleSalvar}
-        title="Editar"
-        corBotao="#f28123"
-        corTexto="#364b56"
-        
-  tamanhoBotao={{ width: 70, height: 15 }}
-      />
+
+        <TouchableOpacity>
+        <Text style>
+          Editar
+          </Text>
+        </TouchableOpacity>
 
       </View>
-
     </ScrollView>
   );
 }
@@ -160,31 +157,32 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'black',
   },
+  // Estilo para posicionar o contêiner no canto superior direito
   userContainer: {
+    position: 'absolute', // Posiciona o contêiner de forma absoluta
+    top: 20, // Distância do topo
+    right: 20, // Distância da direita
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
-    marginLeft:260,
-    margintop:900,
   },
   profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 100,
+    width: screenWidth * 0.1, // 10% da largura da tela
+    height: screenWidth * 0.1, // 10% da largura da tela
+    borderRadius: (screenWidth * 0.1) / 2, // Torna a imagem circular
+    marginLeft: 10, // Espaçamento entre o texto e a imagem
   },
   texto: {
     fontSize: 18,
     color: '#fff',
   },
-  changePhotoButton: {
-    marginBottom: 20,
-  },
-  changePhotoText: {
-    color: '#f28123',
-    textAlign: 'center',
+  textoUsuario: {
+    fontSize: 30,
+    color: '#fff',
+    position:'static',
+    left: -215,
   },
   infoContainer: {
+    marginTop: 100, // Ajusta o conteúdo abaixo do contêiner do usuário
     marginBottom: 20,
   },
   label: {
@@ -195,11 +193,10 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderColor: '#ccc',
-    // borderWidth: 0,
-    // borderRadius: 5,
     borderBottomWidth: 2,
     paddingHorizontal: 10,
     marginBottom: 30,
+    width: '100%', // O input ocupa toda a largura disponível
   },
   notificacoesContainer: {
     flexDirection: 'row',
