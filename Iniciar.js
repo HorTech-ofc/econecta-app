@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 100,
     color: "#fff",
-    fontFamily: "./assets/fontes/Montserrat/static/Montserrat-Regular.ttf",
+    fontFamily: "./assets/fonts/Montserrat/static/Montserrat-Regular.ttf",
   },
   imagem: {
     justifyContent: "flex-start",

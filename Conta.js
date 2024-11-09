@@ -141,7 +141,7 @@ export default function Conta() {
         )}
 
         <TouchableOpacity>
-        <Text style>
+        <Text style={{color: '#f28123', fontSize: 20, marginLeft:300}}>
           Editar
           </Text>
         </TouchableOpacity>

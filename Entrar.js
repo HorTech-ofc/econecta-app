@@ -16,7 +16,7 @@ export default function Entrar() {
 
   // Carregar fontes personalizadas usando expo-font
   const [fontsLoaded] = useFonts({
-    Montserrat: require("./assets/fontes/Montserrat/static/Montserrat-Regular.ttf"),
+    Montserrat: require("./assets/fonts/Montserrat/static/Montserrat-Regular.ttf"),
   });
 
   if (!fontsLoaded) {

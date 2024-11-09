@@ -21,7 +21,7 @@ const imagensHortalicas = {
 export default function Home() {
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
-    Montserrat: require("./assets/fontes/Montserrat/static/Montserrat-Regular.ttf"),
+    Montserrat: require("./assets/fonts/Montserrat/static/Montserrat-Regular.ttf"),
   });
   const [hortalicaSelecionada, setHortalicaSelecionada] = useState(null);
   const [mostrarDetalhes, setMostrarDetalhes] = useState(false);
